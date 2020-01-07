@@ -23,3 +23,5 @@ le model fait l’intermédiaire avec la base de données
 users (id name password)
 songs (id, file)
 playlists (userid songs)
+
+installation: git clone https://github.com/eilehpo-Irasou/Lecteur_audio.git ; cd Lecteur_audio ; git submodule update --init --recursive

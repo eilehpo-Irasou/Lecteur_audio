@@ -1,3 +1,3 @@
-[submodule "js/lib/howler.js"]
-	path = js/lib/howler.js
+[submodule "apps/base/js/lib/howler.js"]
+	path = apps/base/js/lib/howler.js
 	url = https://github.com/goldfire/howler.js.git
