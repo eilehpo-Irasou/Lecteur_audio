@@ -86,7 +86,7 @@ class InscriptionView extends View {
 
 		this.passwordLabel = document.createElement("label");
 		this.passwordLabel.setAttribute("for","password");
-		this.passwordLabel.innerHTML = "Mots de passe :";
+		this.passwordLabel.innerHTML = "Mot de passe :";
 		this.passwordLabel.style.fontSize = "25px";
 		this.passwordLabel.style.color = "white";
 		this.passwordDiv.appendChild(this.passwordLabel);
@@ -111,7 +111,7 @@ class InscriptionView extends View {
 
 		this.confirmPasswordLabel = document.createElement("label");
 		this.confirmPasswordLabel.setAttribute("for","password");
-		this.confirmPasswordLabel.innerHTML = "Confirmer mots de passe :";
+		this.confirmPasswordLabel.innerHTML = "Confirmer le mot de passe :";
 		this.confirmPasswordLabel.style.fontSize = "25px";
 		this.confirmPasswordLabel.style.color = "white";
 		this.confirmPasswordDiv.appendChild(this.confirmPasswordLabel);
@@ -146,7 +146,7 @@ class InscriptionView extends View {
 		this.mainDiv.appendChild(this.creationBtn);
 
 		this.connectionBtn = document.createElement("button");
-		this.connectionBtn.innerHTML = "Connection";
+		this.connectionBtn.innerHTML = "Connexion";
 		this.connectionBtn.style.marginLeft = "100px";
 		this.connectionBtn.style.marginRight = "100px";
 		this.connectionBtn.style.marginBottom = "10px";
@@ -201,7 +201,7 @@ class InscriptionView extends View {
 			this.mvc.controller.creationButtonWasClicked(FD);
 		}
 		else{
-			this.fillErrorDisplay("Password Mismatch");
+			this.fillErrorDisplay("Mot de passe qui ne correspondent pas ");
 		}
 	}
 

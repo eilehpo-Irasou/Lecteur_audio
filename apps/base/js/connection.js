@@ -91,7 +91,7 @@ class ConnectionView extends View {
 
 		this.passwordLabel = document.createElement("label");
 		this.passwordLabel.setAttribute("for","password");
-		this.passwordLabel.innerHTML = "Mots de passe :";
+		this.passwordLabel.innerHTML = "Mot de passe :";
 		this.passwordLabel.style.fontSize = "25px";
 		this.passwordLabel.style.color = "white";
 		this.passwordDiv.appendChild(this.passwordLabel);
@@ -115,7 +115,7 @@ class ConnectionView extends View {
 
 		//button connection
 		this.connectionBtn = document.createElement("button");
-		this.connectionBtn.innerHTML = "Connection";
+		this.connectionBtn.innerHTML = "Connexion";
 		this.connectionBtn.style.margin = "10px";
 		this.connectionBtn.style.marginLeft = "100px";
 		this.connectionBtn.style.marginRight = "100px";
