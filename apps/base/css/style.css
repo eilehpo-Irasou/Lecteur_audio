@@ -28,3 +28,31 @@ body {
 	font-family: helvetica;
 	font-size: 10pt;
 }
+
+.btn {
+	position: absolute;
+	cursor: pointer;
+	opacity: 0.9;
+	-webkit-filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.33));
+	filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.33));
+	-webkit-user-select: none;
+	user-select: none;
+}
+.btn:hover {
+	opacity: 1;
+}
+
+#playBtn {
+	background-image: url(../img/play.png);
+}
+
+#pauseBtn {
+	background-image: url(../img/pause.png);
+}
+#prevBtn {
+	background-image: url(../img/skip-to-start.png);
+
+}
+#nextBtn {
+	background-image: url(../img/end.png);
+}
