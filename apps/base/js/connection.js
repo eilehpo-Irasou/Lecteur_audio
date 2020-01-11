@@ -5,17 +5,16 @@ class ConnectionModel extends Model {
 	}
 
 	async initialize(mvc) {
+		console.log("loaded");
 		super.initialize(mvc);
-
 		this.sessionId = undefined;
 	}
 
-	async updateWrongPsw(){
+	async erreurPassword(){
 
 	}
 
 	async login(pseudo, password) {
-		trace("get session id");
 		let result = await Comm.get("login/"+pseudo+"/"+password);
 		trace(result);
 		if (result.status == 200) {
@@ -62,13 +61,12 @@ class ConnectionView extends View {
 		//division pour le pseudo
 		this.pseudoDiv = document.createElement("div");
 		this.pseudoDiv.style.display = "flex";
-		this.pseudoDiv.style.marginLeft = "100px";
+		this.pseudoDiv.style.marginLeft = "87.5px";
 		this.pseudoDiv.style.marginRight = "10px";
 		this.pseudoDiv.style.marginBottom = "10px";
 
 
 		this.pseudoLabel = document.createElement("label");
-		//this.pseudoLabel.setAttribute("for""username");
 		this.pseudoLabel.innerHTML = "Pseudo :";
 		this.pseudoLabel.style.fontSize = "25px";
 		this.pseudoLabel.style.color = "white";
@@ -168,7 +166,7 @@ class ConnectionView extends View {
 		this.mvc.controller.creationBtnWasClicked();
   	}
 
-	updateWrongPsw(message){
+	erreurPassword(message){
 		this.erreur.innerHTML = message
 	}
 
@@ -187,11 +185,11 @@ class ConnectionController extends Controller {
 
   	async connectionBtnWasClicked(pseudo, password) {
 		trace("btn click", pseudo, password);
-		if (this.verifyPassword(password)) {
+		if (this.verifPassword(password)) {
 			let cryptPassword = sha512(password);
 			let reponse = await this.mvc.model.login(pseudo,cryptPassword)
 			if (this.mvc.model.sessionId == undefined) {
-				this.mvc.view.updateWrongPsw(reponse.return);
+				this.mvc.view.erreurPassword(reponse.return);
 			}
 			else{
 				this.mvc.view.destroy();
@@ -208,7 +206,7 @@ class ConnectionController extends Controller {
 		this.mvc.app.inscriptionMVC.view.activate();
  	}
 
-	verifyPassword(password){
+	verifPassword(password){
 		if (password.length < 8 || password.length > 32) {
 			return false;
 		}

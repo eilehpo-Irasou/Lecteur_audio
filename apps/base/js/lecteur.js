@@ -7,12 +7,26 @@ class LecteurModel extends Model {
 	async initialize(mvc) {
 		console.log("loaded");
 
-		this.initialize();
+		super.initialize(mvc);
+
+		let musiqueList = await Comm.get("musiqueDatabase");
+		this.musique = musiqueList.response.return;
+		
+	}
+
+	async loadMusique(musique){
+		let sound = new Howl({
+			src:['./audio/' + musique + '.mp3'],
+			volume: 0.5,
+		});
+		return sound;
 	}
 
 	async initialize() {
-
+		
 	}
+	
+	
 
 }
 
@@ -170,9 +184,12 @@ class LecteurView extends View {
 		this.prevHandler = e => this.prevClick(e);
 		this.prevBtn.addEventListener("click", this.prevHandler);
 
-		this.volumeHandler = e => this.volumeClick(e);
-		this.volumePlusBtn.addEventListener("change", this.volumeHandler);
-		this.volumeMoinsBtn.addEventListener("change", this.volumeHandler);
+		this.volumePlusHandler = e => this.volumePlusClick(e);
+		this.volumePlusBtn.addEventListener("click", this.volumePlusHandler);
+		
+
+		this.volumeMoinsHandler = e => this.volumeMoinsClick(e);
+		this.volumeMoinsBtn.addEventListener("click", this.volumeMoinsHandler);
 
 		
 	}
@@ -208,8 +225,12 @@ class LecteurView extends View {
 		this.mvc.controller.prevClicked();
 	}
 
-	volumeClick(event){
-		this.mvc.controller.volumeClicked();
+	volumePlusClick(event){
+		this.mvc.controller.volumePlusClicked();
+	}
+
+	volumeMoinsClick(event){
+		this.mvc.controller.volumeMoinsClicked();
 	}
 
 	refreshListeners(){
@@ -239,15 +260,19 @@ class LecteurController extends Controller {
 	}
 
 	async decoClicked(params) {
-
+		this.mvc.view.destroy();
+		this.mvc.app.connectionMVC.view.attach(document.body);
+		this.mvc.app.connectionMVC.view.activate();
 	}
 
-	async playClicked(params) {
-
+	async playClicked(musique) {
+		let playMusic = await this.mvc.model.loadMusique(musique)
+		playMusic.play();
 	}
 
-	async pauseClicked(params) {
-
+	async pauseClicked(musique) {
+		let pauseMusic = await this.mvc.model.loadMusique(musique)
+		pauseMusic.pause();
 	}
 
 	async nextClicked(params) {
@@ -258,8 +283,20 @@ class LecteurController extends Controller {
 
 	}
 
-	async volumeClicked(params) {
+	async volumePlusClicked(musique) {
+		var volume = musique.volume();
+		volume += 0.1;
+		if (volume>1)
+			volume=1;
+		musique.volume(volume);
+	}
 
+	async volumeMoinsClicked(musique){
+		var volume = musique.volume();
+		volume -= 0.1;
+		if (volume<0)
+			volume=0;
+		musique.volume(volume);
 	}
 
 

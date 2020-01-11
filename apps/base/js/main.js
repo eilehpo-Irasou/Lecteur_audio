@@ -30,9 +30,4 @@ class Base {
 
 	}
 
-	initSocket(id){
-		this.io = io();
-		this.io.emit("authentication",id);
-		this.io.on("messa")
-	}
 }

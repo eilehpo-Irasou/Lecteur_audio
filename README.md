@@ -73,13 +73,16 @@ Projet programmation web
 
 	installation: 
 
-	Comme mnote projet a besoin de la libraire howler pour fonctionner l'installation de celui ci ce fais via un submodule pour simplififer le clonage du projet voila la ligne de commande à mettre sur le terminale
+	Comme mnote projet a besoin de la libraire howler pour fonctionner l'installation de celui ci ce
+fais via un submodule pour simplififer le clonage du projet voila la ligne de commande à mettre sur le
+terminale
 
 	-git clone https://github.com/eilehpo-Irasou/Lecteur_audio.git ; cd Lecteur_audio ; git submodule update --init --recursive
 
 	Notre projet:
 
-	Notre projet avait pour base la création d'un lecteur de musique gerant des utilisateur pour la création de playliste de musique selectionner par l'utilisateur sur le site.
+	Notre projet avait pour base la création d'un lecteur de musique gerant des utilisateur pour la 
+création de playliste de musique selectionner par l'utilisateur sur le site.
 
 	Choix et techno de l'API:
 
@@ -93,16 +96,26 @@ Projet programmation web
 
 	Architecture du code:
 
-	- Une fenetre de connection contenant 2 input 1 pour entrer de speudo et un autre pour le mot de passe ainsi que 2 bouttons 1 de connection relié au au input pour valider la connection, et un autre pour acceder a la fenettre de creation de compte.
+	- Une fenetre de connection contenant 2 input 1 pour entrer de speudo et un autre pour le mot de 
+passe ainsi que 2 bouttons 1 de connection relié au au input pour valider la connection, et un autre pour
+acceder a la fenettre de creation de compte.
 	
-	- Une fenetre de création de compte contenant 2 imput 1 pour entre un speudo, un pour entre un mot de passe, et un pour confirmer le mot de passe. Il contient aussi 2 bouton un de validation de compte et un qui permet de revenir a la fenetre de connection.
+	- Une fenetre de création de compte contenant 2 imput 1 pour entre un speudo, un pour entre un
+mot de passe, et un pour confirmer le mot de passe. Il contient aussi 2 bouton un de validation de compte
+et un qui permet de revenir a la fenetre de connection.
 
-	- Une fenetre de lecteur contenant 1 input pour la deconnection une div d'affichage des piste, et une div contenant des div servant pour le controle des musique.
+	- Une fenetre de lecteur contenant 1 input pour la deconnection une div d'affichage des piste, et
+une div contenant des div servant pour le controle des musique.
 
 	- Chaque page a son architecture MVC.
 
 	Problèmes rencontrés:
 	
-	Nous avons eu de gros problèmes pour la réalistion de notre projet en premier nous avions commencé le projet en reprenant les exemple de howler pour commencer notre projet mais peut de temps avant de rendre notre projet nous nous somme rendu compte que le programme que nous avions fait n'étais pas dutous en accord avec le travail demandé. Et de 2 le temps a caause d'un autre projet accez compliquer ce projet a pris beaucoup de retard.
+	Nous avons eu de gros problèmes pour la réalistion de notre projet en premier nous avions
+commencé le projet en reprenant les exemple de howler pour commencer notre projet mais peut de temps
+avant de rendre notre projet nous nous somme rendu compte que le programme que nous avions fait n'étais 
+pas dutous en accord avec le travail demandé. Nous avons aussi pas reussi a lire les fichier audio nous 
+avons constament une erreur 404 meme en donnant directement la source du fichier en paramettre de la 
+source de howler. 
 	
 

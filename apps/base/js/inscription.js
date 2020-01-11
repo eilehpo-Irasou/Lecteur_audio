@@ -16,7 +16,6 @@ class InscriptionModel extends Model {
 
 }
 
-
 class InscriptionView extends View {
 
 	constructor() {
@@ -55,7 +54,7 @@ class InscriptionView extends View {
 		//division pour le pseudo
 		this.pseudoDiv = document.createElement("div");
 		this.pseudoDiv.style.display = "flex";
-		this.pseudoDiv.style.marginLeft = "236px";
+		this.pseudoDiv.style.marginLeft = "253px";
 		this.pseudoDiv.style.marginRight = "10px";
 		this.pseudoDiv.style.marginBottom = "10px";
 
@@ -79,7 +78,7 @@ class InscriptionView extends View {
 		//division pour le password
 		this.passwordDiv = document.createElement("div");
 		this.passwordDiv.style.display = "flex";
-		this.passwordDiv.style.marginLeft = "145px";
+		this.passwordDiv.style.marginLeft = "176px";
 		this.passwordDiv.style.marginRight = "10px";
 		this.passwordDiv.style.marginBottom = "10px";
 
@@ -165,10 +164,7 @@ class InscriptionView extends View {
 	}
 
 	addListeners() {
-		this.createButtonHandler = e => {
-			// mainDiv action
-			e.preventDefault();
-			// I dit it My Way
+		this.createButtonHandler = e => {e.preventDefault();
 	    this.creationButtonClick();
 		}
 		this.mainDiv.addEventListener("submit", this.createButtonHandler);
@@ -244,18 +240,17 @@ class InscriptionController extends Controller {
 		else {
 			trace(result.response);
 			this.mvc.view.fillErrorDisplay(result.response.message);
-			// Go to authentication
 			this.mvc.view.destroy();
 			this.mvc.app.connectionMVC.view.updateWrongPsw(result.response.message);
-			this.mvc.app.connectionMVC.view.attach(document.body); // attach view
-			this.mvc.app.connectionMVC.view.activate(); // activate auth interface
+			this.mvc.app.connectionMVC.view.attach(document.body);
+			this.mvc.app.connectionMVC.view.activate();
 		}
 	}
 
 	connectionBtnWasClicked(){
 		this.mvc.view.destroy();
-		this.mvc.app.connectionMVC.view.attach(document.body); // attach view
-		this.mvc.app.connectionMVC.view.activate(); // activate auth interface
+		this.mvc.app.connectionMVC.view.attach(document.body);
+		this.mvc.app.connectionMVC.view.activate();
 	}
 
 }

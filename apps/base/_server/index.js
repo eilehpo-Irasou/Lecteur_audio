@@ -1,11 +1,46 @@
 const ModuleBase = load("com/base"); // import ModuleBase class
 
+const fs = require('fs');
+const busboy = require('busboy');
+
 class Base extends ModuleBase {
 
 	constructor(app, settings) {
 		super(app, new Map([["name", "baseapp"], ["io", true]]));
+
+		this.musiques= JSON.parse(fs.readFileSync('apps/base/_server/json/musique.json', 'utf8'));
+		this.users= JSON.parse(fs.readFileSync('apps/base/_server/json/user.json', 'utf8'));
+
+		this.titresMusique = new Array();
+		this.musiques.map(musique => {this.titresMusique.push(musique.titre)});
+
 	}
 
+	getmusiqueDatabase(req, res){
+		let data = this.titresMusique;
+		this.sendJSON(req, res, 200, {return:data});
+	}
+
+	getSessionId(sessionId){
+			let id = this.session.get(sessionId);
+			if(id === undefined)
+				id = -1;
+			return id;
+	}
+
+	login(req, res, speudo, password){
+		trace(username, password);
+		let profil = this.users.find(profil => profil.speudo == speudo);
+		if (profil != undefined) {
+			this.sessionIds.set(sessionId, profil.id);
+			trace(sessionId);
+			this.sendJSON(req, res, 200, {return: sessionId});
+		}else{
+			this.sendJSON(req, res, 401, {return: "Mot de passe ou speudo incorrect"});
+		}
+	}
+
+	
 	/**
 	 * @method hello : world
 	 * @param {*} req 
@@ -45,50 +80,6 @@ class Base extends ModuleBase {
 		trace(socket.id, "dummy", packet); // say it
 		socket.emit("dummy", {message: "dummy indeed", value: Math.random()}); // answer dummy random message
 	}
-
-	song(id, file) {
-		let data = [ // some random data
-			{	
-				id: 0, 
-				file: '80s_vibe',
-				howl:null
-			},
-			{
-				id: 1, 
-				file: 'rave_digger',
-				howl:null
-			},
-			{
-				id: 2, 
-				file: 'running_out',
-				howl:null
-			}
-		];
-		this.sendJSON(id, file, song); // answer JSON
-	}
-
-	user(id, name, password){
-        let userdata = [
-            {
-				id: 0, 
-				name: 'test', 
-				password: 'test'
-			}
-        ];
-        this.sendJSON(id, name, password, userdata);
-    }
-	
-    playlists(userid, songs){
-        let playlistdata = [
-			{
-				userid: this.user(id),
-				songs: this.song(id)
-			}
-        ];
-        this.sendJSON(userid, songs, playlistdata);
-    }
-
-	
 
 }
 
