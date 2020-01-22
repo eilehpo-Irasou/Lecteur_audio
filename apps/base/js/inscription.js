@@ -34,6 +34,7 @@ class InscriptionView extends View {
 
 
 		this.mainDiv = document.createElement("div");
+		this.mainDiv.style.alignItems = "center";
 		this.mainDiv.style.display = "flex";
 		this.mainDiv.style.justifyContent = "center";
 		this.mainDiv.style.flexDirection = "column";
@@ -50,6 +51,15 @@ class InscriptionView extends View {
 		this.stage.style.alignItems = "center";
 		this.mainDiv.appendChild(this.titre);
 
+		this.form = document.createElement("form");
+		this.form.setAttribute("action", "register/");
+		this.form.setAttribute("method", "POST");
+		this.form.style.overflow = "auto";
+		this.form.style.display = "flex";
+		this.form.style.alignItems = "center";
+		this.form.style.flexDirection = "column";
+		this.form.style.marginBottom = "15px";
+		this.form.style.fontSize = "20px";
 
 		//division pour le pseudo
 		this.pseudoDiv = document.createElement("div");
@@ -72,7 +82,7 @@ class InscriptionView extends View {
 		this.pseudoInput.placeholder = "entrer pseudo";
 		this.pseudoDiv.appendChild(this.pseudoInput);
 
-		this.mainDiv.appendChild(this.pseudoDiv);
+		this.form.appendChild(this.pseudoDiv);
 
 		
 		//division pour le password
@@ -99,7 +109,7 @@ class InscriptionView extends View {
 		this.passwordInput.style.marginLeft = "10px";
 		this.passwordDiv.appendChild(this.passwordInput);
 
-		this.mainDiv.appendChild(this.passwordDiv);
+		this.form.appendChild(this.passwordDiv);
 
 
 		//division pour la confirmation password
@@ -124,14 +134,13 @@ class InscriptionView extends View {
 		this.confirmPasswordInput.style.marginLeft = "10px";
 		this.confirmPasswordDiv.appendChild(this.confirmPasswordInput);
 
-		this.mainDiv.appendChild(this.confirmPasswordDiv);
-
+		this.form.appendChild(this.confirmPasswordDiv);
 		
 		// message erreur
-		this.erreur = document.createElement("p");
+		this.erreur = document.createElement("span");
 		this.erreur.style.display = "none";
 		this.erreur.style.color = "red";
-		this.mainDiv.appendChild(this.erreur);
+		this.form.appendChild(this.erreur);
 
 		//boutton creation
 		this.creationBtn = document.createElement("button");
@@ -142,7 +151,9 @@ class InscriptionView extends View {
 		this.creationBtn.style.marginLeft = "100px";
 		this.creationBtn.style.marginRight = "100px";
 		this.creationBtn.style.marginBottom = "10px";
-		this.mainDiv.appendChild(this.creationBtn);
+		this.form.appendChild(this.creationBtn);
+
+		this.mainDiv.appendChild(this.form);
 
 		this.connectionBtn = document.createElement("button");
 		this.connectionBtn.innerHTML = "Connexion";
@@ -164,21 +175,20 @@ class InscriptionView extends View {
 	}
 
 	addListeners() {
-		this.createButtonHandler = e => {e.preventDefault();
+		this.creationButtonHandler = e => {
+			e.preventDefault();
 	    this.creationButtonClick();
 		}
-		this.mainDiv.addEventListener("submit", this.createButtonHandler);
+		this.form.addEventListener("submit", this.creationButtonHandler);
 
 		this.connectionBtnHandler = e => this.connectionBtnClick();
 		this.connectionBtn.addEventListener("click", this.connectionBtnHandler);
-
-
 		
 	}
 
 	removeListeners() {
 
-		this.mainDiv.removeEventListener("submit", this.createButtonHandler);
+		this.form.removeEventListener("submit", this.creationButtonHandler);
 
 		this.creationBtn.removeEventListener("click", this.connectionBtnHandler);
 
@@ -191,7 +201,7 @@ class InscriptionView extends View {
 
 	creationButtonClick(){
 		if (this.passwordInput.value == this.confirmPasswordInput.value){
-			const FD = new mainDivData(this.mainDiv);
+			const FD = new FormData(this.form);
 			trace(FD, FD.password);
 			FD.set("password", sha512(this.passwordInput.value));
 			this.mvc.controller.creationButtonWasClicked(FD);
@@ -241,7 +251,7 @@ class InscriptionController extends Controller {
 			trace(result.response);
 			this.mvc.view.fillErrorDisplay(result.response.message);
 			this.mvc.view.destroy();
-			this.mvc.app.connectionMVC.view.updateWrongPsw(result.response.message);
+			this.mvc.app.connectionMVC.view.erreurPassword(result.response.message);
 			this.mvc.app.connectionMVC.view.attach(document.body);
 			this.mvc.app.connectionMVC.view.activate();
 		}
