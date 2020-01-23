@@ -73,7 +73,7 @@ class ConnectionView extends View {
 
 		this.pseudoInput = document.createElement("input");
 		this.pseudoInput.setAttribute("type","text");
-		this.pseudoInput.setAttribute("name","username");
+		this.pseudoInput.setAttribute("name","speudo");
 		this.pseudoInput.style.marginLeft = "10px";
 		this.pseudoInput.placeholder = "entrer pseudo";
 		this.pseudoDiv.appendChild(this.pseudoInput);
@@ -105,7 +105,7 @@ class ConnectionView extends View {
 		this.mainDiv.appendChild(this.passwordDiv);
 
 		//message error
-		this.erreur = document.createElement("p");
+		this.erreur = document.createElement("span");
 		this.erreur.style.color = "red";
 		this.erreur.style.display = "none";
 		this.mainDiv.appendChild(this.erreur);

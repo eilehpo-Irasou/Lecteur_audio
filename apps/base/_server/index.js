@@ -56,16 +56,16 @@ class Base extends ModuleBase {
 	}
 
 
-	login(req, res, speudo, password){
-		trace(speudo, password);
-		let profil = this.users.find(profil => profil.speudo == speudo);
+	login(req, res, username, password){
+		trace(username, password);
+		let profil = this.users.find(profil => profil.username == username);
 		if (profil != undefined) {
 			let sessionId = this._createSessionId();
 			this.sessionIds.set(sessionId, profil.id);
 			trace(sessionId);
 			this.sendJSON(req, res, 200, {return: sessionId});
 		}else{
-			this.sendJSON(req, res, 401, {return: "Erreur mot de passe/ speudo"});
+			this.sendJSON(req, res, 401, {return: "Erreur mot de passe/ username"});
 		}
 	}
 
@@ -79,7 +79,7 @@ class Base extends ModuleBase {
 
 		data.forEach(elem => {
 
-			if(elem[0] == "speudo"){
+			if(elem[0] == "username"){
 				if (this._isUsernameTaken(elem[1])) {
 					errorMessage = "Speudo deja utilisé";
 				}
@@ -119,10 +119,10 @@ class Base extends ModuleBase {
 			return prom;
 	}
 
-	_isUsernameTaken(speudo){
+	_isUsernameTaken(username){
 		let taken = false;
 		this.users.map(profil => {
-			if (profil.speudo == speudo) taken = true;
+			if (profil.username == username) taken = true;
 		});
 		return taken;
 	}

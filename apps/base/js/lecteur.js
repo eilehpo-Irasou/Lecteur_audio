@@ -29,10 +29,6 @@ class LecteurModel extends Model {
 		});
 		return sound;
 	}
-
-	async initialize() {
-		
-	}
 	
 	
 
@@ -52,27 +48,46 @@ class LecteurView extends View {
 
 		//this.stage.style.display = "flex";
 		this.stage.style.backgroundColor = "black";
-		this.stage.style.width = "100%";
-		this.stage.style.height = "100%";
+		this.stage.style.display = "flex";
+		// axe y
+		this.stage.style.alignItems = "center";
+		// axe x
+		this.stage.style.justifyContent = "center";
 
 
 		this.deconnectionDiv = document.createElement("div");
 		
+		//di pour le lecteur
+		this.headerDiv = document.createElement("header")
+		this.headerDiv.style.position = "absolute";
+		this.headerDiv.style.borderBottom= "double orange";
+		this.headerDiv.style.height = "100px";
+		this.headerDiv.style.width = "100%";
+		this.headerDiv.style.top = "0px";
+		this.headerDiv.style.backgroundColor = "#222222";
+		this.stage.appendChild(this.headerDiv);
+
+		this.deconnectionDiv = document.createElement("div");
+		this.deconnectionDiv.style.display = "flex";
+		this.deconnectionDiv.style.justifyContent = "center";
+		this.deconnectionDiv.style.marginTop = "5px";
+		this.headerDiv.appendChild(this.deconnectionDiv);
 
 		this.deconnectionBtn = document.createElement("button");
+		this.deconnectionBtn.style.position = "absolute";
 		this.deconnectionBtn.innerHTML = "Déconnection";
 		this.deconnectionBtn.style.fontSize = "20px";
-		this.stage.appendChild(this.deconnectionBtn);
-
+		this.deconnectionDiv.appendChild(this.deconnectionBtn);
+		
 		this.nameDiv = document.createElement("div");
 		this.nameDiv.style.display = "flex";
-		this.nameDiv.style.alignItems = "center";
-		this.nameDiv.style.justifyContent = "space-evenly";
-		this.stage.appendChild(this.nameDiv);
+		this.nameDiv.style.justifyContent = "center";
+		this.nameDiv.style.marginTop = "20px";
+		this.headerDiv.appendChild(this.nameDiv);
 
 		this.profileName = document.createElement("h1");
-		this.profileName.style.marginTop = "3%"
 		this.profileName.style.fontSize = "35px";
+		this.profileName.style.color = "orange";
 		this.nameDiv.appendChild(this.profileName);
 
 		//div pour la liste des musiques
@@ -80,24 +95,34 @@ class LecteurView extends View {
 		this.musiqueDiv.style.position = "absolute";
 		this.musiqueDiv.style.border= "double orange";
 		this.musiqueDiv.style.backgroundColor = "white";
-		this.musiqueDiv.style.height = "80%";
-		this.musiqueDiv.style.width = "80%";
+		this.musiqueDiv.style.marginBottom = "10px";
+		this.musiqueDiv.style.height = "60%";
+		this.musiqueDiv.style.width = "70%";
+		this.musiqueDiv.style.justifyContent = "center";
 
 		this.musiqueDiv.style.marginLeft = "10%";
 		this.musiqueDiv.style.marginRight = "10%";
 		this.stage.appendChild(this.musiqueDiv);
 
+
+		this.titreDiv = document.createElement("div");
+		this.titreDiv.style.display = "flex";
+		this.titreDiv.style.justifyContent = "center";
+		this.titreDiv.style.marginTop = "10px";
+		this.musiqueDiv.appendChild(this.titreDiv);
+
 		//liste musique
 		this.titre = document.createElement("h1");
 		this.titre.innerHTML = "Liste";
 		this.titre.style.fontSize = "30px";
-		this.titre.style.margin = "10px";
+		//this.titre.style.margin = "10px";
 		this.titre.style.color = "orange"
-		this.musiqueDiv.appendChild(this.titre);
-
+		this.titreDiv.appendChild(this.titre);
 
 		//div pour le lecteur
 		this.lecteurDiv = document.createElement("footer")
+		this.lecteurDiv.style.display = "flex";
+		this.lecteurDiv.style.justifyContent = "center";
 		this.lecteurDiv.style.position = "absolute";
 		this.lecteurDiv.style.borderTop= "double orange";
 		this.lecteurDiv.style.height = "130px";
@@ -111,7 +136,7 @@ class LecteurView extends View {
 		this.btnDiv.style.height = "70px";
 		this.btnDiv.style.width = "300px";
 		this.btnDiv.style.backgroundColor = "#222222";
-		this.btnDiv.style.marginLeft = "5%"
+		//this.btnDiv.style.marginLeft = "5%"
 		this.lecteurDiv.appendChild(this.btnDiv)
 
 		this.playBtn = document.createElement("div");
@@ -149,9 +174,10 @@ class LecteurView extends View {
 
 		//div pour le volume
 		this.volumeDiv = document.createElement("div");
+		this.volumeDiv.style.display = "flex";
+		this.volumeDiv.style.justifyContent = "center";
 		this.volumeDiv.style.position = "absolute";
 		this.volumeDiv.style.marginTop = "90px";
-		this.volumeDiv.style.marginLeft = "5%";
 
 
 		this.lecteurDiv.appendChild(this.volumeDiv);
@@ -161,14 +187,14 @@ class LecteurView extends View {
 		this.volumePlusBtn.style.position = "absolute";
 		this.volumePlusBtn.innerHTML = "Vol+";
 		this.volumePlusBtn.style.fontSize = "20px";
-		//this.volumePlusBtn.style.marginLeft= "90px";
+		this.volumePlusBtn.style.left= "0px";
 		this.volumeDiv.appendChild(this.volumePlusBtn);
 
 		this.volumeMoinsBtn = document.createElement("button");
 		this.volumeMoinsBtn.style.position = "absolute";
 		this.volumeMoinsBtn.innerHTML = "Vol-";
 		this.volumeMoinsBtn.style.fontSize = "20px";
-		this.volumeMoinsBtn.style.marginLeft = "210px";
+		this.volumeMoinsBtn.style.right = "0px";
 
 
 		this.volumeDiv.appendChild(this.volumeMoinsBtn);
@@ -255,7 +281,7 @@ class LecteurView extends View {
 
 	updateProfil(data){
 		console.log(data);
-		this.profileName.innerHTML = data.speudo;
+		this.profileName.innerHTML = data.username;
 	}
 
 	fillErrorDisplay(message){

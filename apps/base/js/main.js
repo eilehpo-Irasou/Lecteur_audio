@@ -30,4 +30,13 @@ class Base {
 		this.connectionMVC.view.activate();
 		
 	}
+
+	initSocket(id) {
+		trace("init socket");
+		this.io = io();
+		this.io.emit('authentication', id);
+		this.io.on('message', msg => {
+			this.conversationMVC.model.updateConversation();	// TODO remplacer par fonction qui gere les message recu
+		});
+	}
 }
