@@ -19,15 +19,15 @@ class Base {
 		this.connectionMVC = new MVC("connectionMVC", this, new ConnectionModel(), new ConnectionView(), new ConnectionController());
 		await this.connectionMVC.initialize();
 
-		this.lecteurMVC.view.attach(document.body);
-		this.lecteurMVC.view.activate();
+
+		//this.lecteurMVC.view.attach(document.body);
+		//this.lecteurMVC.view.activate();
 
 		//this.inscriptionMVC.view.attach(document.body);
 		//this.inscriptionMVC.view.activate();
 
-		//this.connectionMVC.view.attach(document.body);
-		//this.connectionMVC.view.activate();
-
+		this.connectionMVC.view.attach(document.body);
+		this.connectionMVC.view.activate();
+		
 	}
-
 }

@@ -1,48 +1,60 @@
 const ModuleBase = load("com/base"); // import ModuleBase class
 
-const fs = require('fs');
-const busboy = require('busboy');
+const fs = 			require("fs");			// file system
+const Busboy = require("busboy");
 
 class Base extends ModuleBase {
 
 	constructor(app, settings) {
 		super(app, new Map([["name", "baseapp"], ["io", true]]));
 
-		this.musiques= JSON.parse(fs.readFileSync('apps/base/_server/json/musique.json', 'utf8'));
-		this.users= JSON.parse(fs.readFileSync('apps/base/_server/json/user.json', 'utf8'));
-
+		this.musiques= JSON.parse(fs.readFileSync('database/musique.json', 'utf8'));
+		this.users = JSON.parse(fs.readFileSync('database/user.json', 'utf8'));
 		this.sessions = new Map();
 		this.sessionIds = new Map();
 
-		this.titresMusique = new Array();
-		this.musiques.map(musique => {this.titresMusique.push(musique.titre)});
-
-	}
-
-	getSessionId(sessionId){
-			let id = this.session.get(sessionId);
-			if(id === undefined)
-				id = -1;
-			return id;
 	}
 
 	getmusiqueDatabase(req, res){
-			let data = this.titresMusique;
-			this.sendJSON(req, res, 200, {return:data});
+				let data = this.titresMusique;
+				this.sendJSON(req, res, 200, {return:data});
 	}
+
+	 getSessionId(sessionId) {
+ 		let id = this.sessionIds.get(sessionId);
+ 		if (id === undefined) {
+ 			id = -1;
+ 		}
+ 		return id;
+ 	}
+
 
 	getProfileFromSessionId(req, res, ...param) {
 		trace(param)
 		let ssId = [...param].join(" ");
-		let id = this.getSessionId(ssId);
-		let profile = 404;
+		let id = this.getSessionId(ssId); // profile id of session id
+		let profile = 404; // error case
 		if (id != -1) {
 			profile = this.users[id];
 			profile.password = "Nice Try ;)"
 		}
-		let data = profile;
-		this.sendJSON(req, res, 200, {return: data});
+		let data = profile; // object profile of user id
+		this.sendJSON(req, res, 200, {return: data}); // answer JSON
 	}
+
+
+	getProfileFromId(req, res, ...param) {
+		trace(param)
+		let id = [...param].join(" ");
+		let profile = 404; // error case
+		if (id != -1) {
+			profile = this.users[id];
+			profile.password = "Nice Try ;)"
+		}
+		let data = profile; // object profile of user id
+		this.sendJSON(req, res, 200, {return: data}); // answer JSON
+	}
+
 
 	login(req, res, speudo, password){
 		trace(speudo, password);
@@ -53,16 +65,8 @@ class Base extends ModuleBase {
 			trace(sessionId);
 			this.sendJSON(req, res, 200, {return: sessionId});
 		}else{
-			this.sendJSON(req, res, 401, {return: "Mot de passe ou speudo incorrect"});
+			this.sendJSON(req, res, 401, {return: "Erreur mot de passe/ speudo"});
 		}
-	}
-
-	_createSessionId() {
-		let sessionId = "" + Math.random();
-		while (this.sessionIds.get(sessionId) != undefined) {
-			sessionId = "" + Math.random();
-		}
-		return sessionId;
 	}
 
 	async register(req, res) {
@@ -77,7 +81,7 @@ class Base extends ModuleBase {
 
 			if(elem[0] == "speudo"){
 				if (this._isUsernameTaken(elem[1])) {
-					errorMessage = "speudo déja utilisé";
+					errorMessage = "Speudo deja utilisé";
 				}
 				else{
 					newProfile[elem[0]] = elem[1];
@@ -92,23 +96,24 @@ class Base extends ModuleBase {
 			this.sendJSON(req, res, 200, {return: 500, message: errorMessage});
 		}
 		else{
-			this.sendJSON(req, res, 200, {return: 200, message: "Compte crée"});
+			this.sendJSON(req, res, 200, {return: 200, message: "Compte Crée"});
 			newProfile.id = this.users.length;
 			trace(newProfile);
 			this.users.push(newProfile);
+
 		}
 	}
 
 	async _getDataFromRequest(req){
 		let busboy = new Busboy({ headers: req.headers });
-		let result, prom = new Promise(resolve => result = resolve);
-		let form = new Array();
+			let result, prom = new Promise(resolve => result = resolve);
+			let form = new Array();
 		busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-				form.push([fieldname, val]);
+			form.push([fieldname, val]);
 		});
 		busboy.on('finish', function() {
-				result(form);
-		  trace('Done parsing form!');
+			result(form);
+		trace('Done parsing form!');
 		});
 		req.pipe(busboy);
 			return prom;
@@ -122,23 +127,21 @@ class Base extends ModuleBase {
 		return taken;
 	}
 
-	/**
-	 * @method hello : world
-	 * @param {*} req 
-	 * @param {*} res 
-	 * @param  {...*} params : some arguments
-	 */
+	_createSessionId() {
+		let sessionId = "" + Math.random();
+		while (this.sessionIds.get(sessionId) != undefined) {
+			sessionId = "" + Math.random();
+		}
+		return sessionId;
+	}
+
+
 	hello(req, res, ... params) {
 		let answer = ["hello", ...params, "!"].join(" "); // say hello
 		trace(answer); // say it
 		this.sendJSON(req, res, 200, {message: answer}); // answer JSON
 	}
 
-	/**
-	 * @method data : random data response
-	 * @param {*} req 
-	 * @param {*} res 
-	 */
 	data(req, res) {
 		let data = [ // some random data
 			{id: 0, name: "data0", value: Math.random()},
@@ -150,7 +153,7 @@ class Base extends ModuleBase {
 
 	/**
 	 * @method _onIOConnect : new IO client connected
-	 * @param {*} socket 
+	 * @param {*} socket
 	 */
 	_onIOConnect(socket) {
 		super._onIOConnect(socket); // do not remove super call

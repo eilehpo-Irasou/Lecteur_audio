@@ -5,12 +5,7 @@ class InscriptionModel extends Model {
 	}
 
 	async initialize(mvc) {
-		console.log("loaded");
-
-		this.initialize();
-	}
-
-	async initialize() {
+		super.initialize(mvc);
 
 	}
 
@@ -25,6 +20,7 @@ class InscriptionView extends View {
 
 	initialize(mvc) {
 		super.initialize(mvc);
+
 
 
 		this.stage.style.display = "flex";
@@ -163,12 +159,13 @@ class InscriptionView extends View {
 		this.mainDiv.appendChild(this.connectionBtn);
 	}
 
-
+	// activate UI
 	activate() {
 		super.activate();
 		this.addListeners(); // listen to events
 	}
 
+	// deactivate
 	deactivate() {
 		super.deactivate();
 		this.removeListeners();
@@ -176,21 +173,25 @@ class InscriptionView extends View {
 
 	addListeners() {
 		this.creationButtonHandler = e => {
+			// form action
 			e.preventDefault();
+			// I dit it My Way
 	    this.creationButtonClick();
 		}
 		this.form.addEventListener("submit", this.creationButtonHandler);
 
-		this.connectionBtnHandler = e => this.connectionBtnClick();
-		this.connectionBtn.addEventListener("click", this.connectionBtnHandler);
-		
+		this.connectionButtonHandler = e => this.connectionButtonClick();
+		this.connectionBtn.addEventListener("click", this.connectionButtonHandler);
+
 	}
 
 	removeListeners() {
 
 		this.form.removeEventListener("submit", this.creationButtonHandler);
 
-		this.creationBtn.removeEventListener("click", this.connectionBtnHandler);
+		this.creationBtn.removeEventListener("click", this.connectionButtonHandler);
+
+
 
 	}
 
@@ -207,14 +208,13 @@ class InscriptionView extends View {
 			this.mvc.controller.creationButtonWasClicked(FD);
 		}
 		else{
-			this.fillErrorDisplay("Mot de passe qui ne correspondent pas ");
+			this.fillErrorDisplay("Password Mismatch");
 		}
 	}
 
-	connectionBtnClick() {
-		this.mvc.controller.connectionBtnWasClicked();
+	connectionButtonClick() {
+		this.mvc.controller.connectionButtonWasClicked();
 	}
-
 
 	fillErrorDisplay(message){
 		this.erreur.style.display = "";
@@ -232,11 +232,11 @@ class InscriptionController extends Controller {
 	initialize(mvc) {
 		super.initialize(mvc);
 
-	
 	}
 
 
 	async creationButtonWasClicked(FD){
+		
 		let result = await fetch('register/', {
 		  method: 'POST',
 		  body: FD
@@ -250,17 +250,19 @@ class InscriptionController extends Controller {
 		else {
 			trace(result.response);
 			this.mvc.view.fillErrorDisplay(result.response.message);
+			// Go to authentication
 			this.mvc.view.destroy();
 			this.mvc.app.connectionMVC.view.erreurPassword(result.response.message);
-			this.mvc.app.connectionMVC.view.attach(document.body);
-			this.mvc.app.connectionMVC.view.activate();
+			this.mvc.app.connectionMVC.view.attach(document.body); // attach view
+			this.mvc.app.connectionMVC.view.activate(); // activate auth interface
+
 		}
 	}
 
-	connectionBtnWasClicked(){
+	connectionButtonWasClicked(){
 		this.mvc.view.destroy();
-		this.mvc.app.connectionMVC.view.attach(document.body);
-		this.mvc.app.connectionMVC.view.activate();
+		this.mvc.app.connectionMVC.view.attach(document.body); // attach view
+		this.mvc.app.connectionMVC.view.activate(); // activate auth interface
 	}
 
 }

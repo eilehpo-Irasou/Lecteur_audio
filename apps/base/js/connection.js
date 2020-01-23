@@ -18,10 +18,10 @@ class ConnectionModel extends Model {
 		let result = await Comm.get("login/"+pseudo+"/"+password);
 		trace(result);
 		if (result.status == 200) {
-			this.sessionId = result.reponse.return;
+			this.sessionId = result.response.return;
 		}
 		trace(this.sessionId);
-		return result.reponse;
+		return result.response;
 	}
 
 }
@@ -32,7 +32,6 @@ class ConnectionView extends View {
 		super();
 		this.table = null;
 	}
-
 	initialize(mvc) {
 		super.initialize(mvc);
 
@@ -187,9 +186,9 @@ class ConnectionController extends Controller {
 		trace("btn click", pseudo, password);
 		if (this.verifPassword(password)) {
 			let cryptPassword = sha512(password);
-			let reponse = await this.mvc.model.login(pseudo,cryptPassword)
+			let response = await this.mvc.model.login(pseudo,cryptPassword)
 			if (this.mvc.model.sessionId == undefined) {
-				this.mvc.view.erreurPassword(reponse.return);
+				this.mvc.view.erreurPassword(response.return);
 			}
 			else{
 				this.mvc.view.destroy();
