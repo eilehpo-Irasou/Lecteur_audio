@@ -9,9 +9,9 @@ class LecteurModel extends Model {
 
 		super.initialize(mvc);
 
-		let musiqueList = await Comm.get("musiqueDatabase");
-		this.musique = musiqueList.response.return;
-		
+		let titreReturn = await Comm.get("getMusiqueFromDatabase"); 
+		this.titres = titreReturn.response.return;
+
 	}
 
 	async getProfile(){
@@ -28,6 +28,11 @@ class LecteurModel extends Model {
 			volume: 0.5,
 		});
 		return sound;
+	}
+
+	loadTitre(){
+		//trace(this.titres)
+		return this.titres;
 	}
 	
 	
@@ -94,8 +99,7 @@ class LecteurView extends View {
 		this.musiqueDiv = document.createElement("div");
 		this.musiqueDiv.style.position = "absolute";
 		this.musiqueDiv.style.border= "double orange";
-		this.musiqueDiv.style.backgroundColor = "white";
-		this.musiqueDiv.style.marginBottom = "10px";
+		this.musiqueDiv.style.backgroundColor = "#222222";
 		this.musiqueDiv.style.height = "60%";
 		this.musiqueDiv.style.width = "70%";
 		this.musiqueDiv.style.justifyContent = "center";
@@ -104,12 +108,22 @@ class LecteurView extends View {
 		this.musiqueDiv.style.marginRight = "10%";
 		this.stage.appendChild(this.musiqueDiv);
 
-
 		this.titreDiv = document.createElement("div");
 		this.titreDiv.style.display = "flex";
 		this.titreDiv.style.justifyContent = "center";
 		this.titreDiv.style.marginTop = "10px";
 		this.musiqueDiv.appendChild(this.titreDiv);
+
+		this.titreCombo = document.createElement("select");
+		this.titreCombo.setAttribute("name", "titre");
+		this.titreCombo.setAttribute("multiple", "multiple");
+		this.titreCombo.setAttribute("required", "");
+		this.titreCombo.style.backgroundColor = "white";
+		this.titreCombo.style.width = "100%";
+		this.titreCombo.style.height = "80%";
+		this.titreCombo.style.fontSize="50px";
+
+		this.musiqueDiv.appendChild(this.titreCombo);
 
 		//liste musique
 		this.titre = document.createElement("h1");
@@ -222,6 +236,12 @@ class LecteurView extends View {
 		this.decoHandler = e => this.decoClick(e);
 		this.deconnectionBtn.addEventListener("click", this.decoHandler);
 
+		this.playHandler = e => this.playClick(e);
+		this.playBtn.addEventListener("click", this.playHandler);
+
+		this.pauseHandler = e => this.pauseClick(e);
+		this.pauseBtn.addEventListener("click", this.pauseHandler);
+
 		this.nextHandler = e => this.nextClick(e);
 		this.nextBtn.addEventListener("click", this.nextHandler);
 
@@ -235,13 +255,15 @@ class LecteurView extends View {
 		this.volumeMoinsHandler = e => this.volumeMoinsClick(e);
 		this.volumeMoinsBtn.addEventListener("click", this.volumeMoinsHandler);
 
-		this.controleHandler = e => this.controleClick(e);
+		/*this.controleHandler = e => this.controleClick(e);
 		this.playBtn.addEventListener("click", this.controleHandler);
-		this.pauseBtn.addEventListener("click", this.controleHandler);
+		this.pauseBtn.addEventListener("click", this.controleHandler);*/
 	}
 
 	removeListeners() {
 		this.deconnectionBtn.removeEventListener("click", this.decoHandler);
+		this.playBtn.removeEventListener("click", this.playHandler);
+		this.pauseBtn.removeEventListener("click", this.pauseHandler);
 		this.nextBtn.removeEventListener("click", this.nextHandler);
 		this.prevBtn.removeEventListener("click", this.prevHandler);
 		this.volumePlusBtn.removeEventListener("change", this.volumeHandler);
@@ -252,6 +274,14 @@ class LecteurView extends View {
 
 	decoClick(event){
 		this.mvc.controller.decoClicked();
+	}
+
+	playClick(event){
+		this.mvc.controller.playClicked();
+	}
+
+	pauseClick(event){
+		this.mvc.controller.pauseClicked();
 	}
 
 	nextClick(event){
@@ -270,13 +300,26 @@ class LecteurView extends View {
 		this.mvc.controller.volumeMoinsClicked();
 	}
 
-	controleClick(event){
+	/*controleClick(event){
 		this.mvc.controller.controleClicked();
-	}
+	}*/
 
 	refreshListeners(){
 		this.removeListeners();
 		this.addListeners();
+	}
+
+	updateComboWithList(combo, data) {
+		[...combo.childNodes].map(child => {combo.removeChild(child)});
+
+		if (data != 404){
+			data.map(element => {
+				let option = document.createElement("option");
+				option.text = element;
+				option.value = element;
+				combo.appendChild(option);
+			});
+		}
 	}
 
 	updateProfil(data){
@@ -299,6 +342,7 @@ class LecteurController extends Controller {
 
 	initialize(mvc) {
 		super.initialize(mvc);
+		this.mvc.view.updateComboWithList(this.mvc.view.titreCombo, this.mvc.model.loadTitre());
 
 	
 	}
@@ -309,6 +353,21 @@ class LecteurController extends Controller {
 		this.mvc.app.connectionMVC.view.activate();
 	}
 
+	async playClicked(musique) {
+		let playMusic = await this.mvc.model.loadMusique(musique)
+		playMusic.play();
+		this.mvc.view.playBtn.style.display = "none";
+		this.mvc.view.pauseBtn.style.display = "block";
+
+
+	}
+
+	async pauseClicked(musique) {
+		let pauseMusic = await this.mvc.model.loadMusique(musique)
+		pauseMusic.pause();
+		this.mvc.view.playBtn.style.display = "block";
+		this.mvc.view.pauseBtn.style.display = "none";
+	}
 
 	async nextClicked(params) {
 
@@ -334,7 +393,7 @@ class LecteurController extends Controller {
 		volumeM.volume();
 	}
 
-	async controleClicked(musique) {
+	/*async controleClicked(musique) {
 		let music = await this.mvc.model.loadMusique(musique)
 		let musicplay = music.play;
 		let pause = false;
@@ -354,7 +413,7 @@ class LecteurController extends Controller {
 			pause=false;
 
 		}
-	}
+	}*/
 
 	async initProfile(){
 		this.mvc.view.updateProfil(await this.mvc.model.getProfile());

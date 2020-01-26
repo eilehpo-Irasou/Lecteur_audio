@@ -13,21 +13,23 @@ class Base extends ModuleBase {
 		this.sessions = new Map();
 		this.sessionIds = new Map();
 
+		this.titres = new Array();
+		this.musiques.map(titreMusique =>{this.titres.push(titreMusique.name)})
+
 	}
 
-	getmusiqueDatabase(req, res){
-				let data = this.titresMusique;
-				this.sendJSON(req, res, 200, {return:data});
+	getMusiqueFromDatabase(req, res) {
+		let data =  this.titres;
+		this.sendJSON(req, res, 200, {return: data});
 	}
 
-	 getSessionId(sessionId) {
+	getSessionId(sessionId) {
  		let id = this.sessionIds.get(sessionId);
  		if (id === undefined) {
  			id = -1;
  		}
  		return id;
  	}
-
 
 	getProfileFromSessionId(req, res, ...param) {
 		trace(param)
@@ -41,20 +43,6 @@ class Base extends ModuleBase {
 		let data = profile; // object profile of user id
 		this.sendJSON(req, res, 200, {return: data}); // answer JSON
 	}
-
-
-	getProfileFromId(req, res, ...param) {
-		trace(param)
-		let id = [...param].join(" ");
-		let profile = 404; // error case
-		if (id != -1) {
-			profile = this.users[id];
-			profile.password = "Nice Try ;)"
-		}
-		let data = profile; // object profile of user id
-		this.sendJSON(req, res, 200, {return: data}); // answer JSON
-	}
-
 
 	login(req, res, username, password){
 		trace(username, password);
